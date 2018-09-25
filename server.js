@@ -52,13 +52,16 @@ function processError(err, res) {
 // No API key required
 function createSearch(request, response) {
   let url = 'https://www.googleapis.com/books/v1/volumes?q=';
+  
   console.log(request.body);
+
   if (request.body.search[1] === 'title') {
     url += `+intitle:${request.body.search[0]}`;
   }
   if (request.body.search[1] === 'author') {
     url += `+inauthor:${request.body.search[0]}`;
   }
+
   superagent.get(url)
     .then(apiResponse => {
       const bookResult = apiResponse.body.items.map(book => {
@@ -74,12 +77,11 @@ function createSearch(request, response) {
 
 function Book(info) {
   const placegholderImage = 'http://www.newyorkpaddy.com/images/covers/NoCoverAvailable.jpg';
-  this.title = info.title;
-  this.author = info.authors;
+  this.title = info.title === undefined ? 'No title available' : info.title;
+  this.author = info.authors === undefined ? 'No Author available': info.authors;
   // Needed a ternary for ISBN
   this.isbn = isbnLookup(info) || 'No ISBN Available';
   // Need a ternary for image
   this.img_url = info.imageLinks === undefined ? placegholderImage : info.imageLinks.thumbnail;
-  this.description = info.description;
-
+  this.description = info.description === undefined ? 'No description available' : info.description;
 }
