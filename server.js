@@ -65,7 +65,7 @@ function createSearch(request, response) {
   superagent.get(url)
     .then(apiResponse => {
       const bookResult = apiResponse.body.items.map(book => {
-        new Book(book.volumeInfo); // volumeInfo comes from the API
+        return new Book(book.volumeInfo); // volumeInfo comes from the API
       });
       return bookResult;
     })
