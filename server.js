@@ -21,6 +21,6 @@ app.use(express.urlencoded({extended: true}));
 // Setting the view engine for server-side templating
 app.set('view engine', 'ejs');
 
-app.get('/hello', (request, response) => response.render('pages/index'));
+app.get('/', (request, response) => response.render('pages/index'));
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
