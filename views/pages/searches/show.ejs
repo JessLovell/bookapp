@@ -6,12 +6,14 @@
         <p><a href="/">Home</a></p>
         <ul>
             <% bookInfo.forEach(item => { %>
-                <li><%= item.title %></li>
-                <li><%= item.author %></li>
-                <li><%= item.isbn %></li>
-                <li><%= item.img_url %></li>
-                <li><%= item.description %></li>
+            <li class="book-item">
+                <h2><%= item.title %></h2>
+                <h2><%= item.author %></h2>
+                <h3><%= item.isbn %></h3>
+                <img src="<%= item.img_url %>" />
+                <p><%= item.description %></p>
                 <% }) %>
+            </li>
         </ul>
     </body>
 </html>
