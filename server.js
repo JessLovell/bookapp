@@ -1,31 +1,22 @@
 'use strict';
 
-// Application Dependencies
-// ExpressJS allows us to use the "app.get" syntax
+//Application Dependencies
 const express = require('express');
-
-// Superagent makes our proxied API requests
 const superagent = require('superagent');
-
-// Instantiate ExpressJS so we can utilize its methods
 const app = express();
 
-// Making sure the server knows which poty yo listen for requests on
 const PORT = process.env.PORT || 3000;
 
 // Application Middleware
-// If you have a public folder with some CSS files..
 app.use(express.static('./public'));
 app.use(express.urlencoded({extended: true}));
 
 // Setting the view engine for server-side templating
 app.set('view engine', 'ejs');
 
-app.get('/', (request, response) => response.render('pages/index'));
-
-
-// Creates a new search to the Google Books API
+app.get('/', showForm);
 app.post('/searches', createSearch);
+
 
 // Catch-all
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
@@ -33,8 +24,6 @@ app.get('*', (request, response) => response.status(404).send('This route does n
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 
 // Helper Functions
-
-// For looking up the ISBN
 function isbnLookup(info) {
   info.industryIdentifiers.forEach(element => {
     if (element.type === 'ISBN_13') {
@@ -49,10 +38,18 @@ function processError(err, res) {
   if (res) res.status(500).send('Sorry, something went wrong');
 }
 
-// No API key required
+//show the form fields
+function showForm (request, response) {
+  response.render('pages/index')
+}
+
+//Add book to database
+function addBook (request, response) {
+  
+}
+
 function createSearch(request, response) {
   let url = 'https://www.googleapis.com/books/v1/volumes?q=';
-  
   console.log(request.body);
 
   if (request.body.search[1] === 'title') {
@@ -79,9 +76,7 @@ function Book(info) {
   const placegholderImage = 'http://www.newyorkpaddy.com/images/covers/NoCoverAvailable.jpg';
   this.title = info.title === undefined ? 'No title available' : info.title;
   this.author = info.authors === undefined ? 'No Author available': info.authors;
-  // Needed a ternary for ISBN
   this.isbn = isbnLookup(info) || 'No ISBN Available';
-  // Need a ternary for image
   this.img_url = info.imageLinks === undefined ? placegholderImage : info.imageLinks.thumbnail;
   this.description = info.description === undefined ? 'No description available' : info.description;
 }
