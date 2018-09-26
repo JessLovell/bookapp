@@ -2,6 +2,7 @@
 
 //Application Dependencies
 const express = require('express');
+const pg = require('pg');
 const superagent = require('superagent');
 const app = express();
 
@@ -11,10 +12,14 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('./public'));
 app.use(express.urlencoded({extended: true}));
 
+const client = new pg.Client('postgres://localhost:5432/book_app');
+client.connect();
+client.on('error', err => console.log(err));
 // Setting the view engine for server-side templating
 app.set('view engine', 'ejs');
 
-app.get('/', showForm);
+app.get('/', getBooks);
+// app.get('/', showForm); //need to do this for the form page
 app.post('/searches', createSearch);
 
 
@@ -45,7 +50,7 @@ function showForm (request, response) {
 
 //Add book to database
 function addBook (request, response) {
-  
+
 }
 
 function createSearch(request, response) {
@@ -79,4 +84,12 @@ function Book(info) {
   this.isbn = isbnLookup(info) || 'No ISBN Available';
   this.img_url = info.imageLinks === undefined ? placegholderImage : info.imageLinks.thumbnail;
   this.description = info.description === undefined ? 'No description available' : info.description;
+}
+
+function getBooks (request, response) {
+  let SQL = 'SELECT * FROM books;';
+
+  return client.query(SQL)
+    .then(results => response.render('pages/index', {results: results.rows}))
+    .catch(processError);
 }
