@@ -9,24 +9,27 @@
     <link rel="stylesheet" href="styles/icons.css">
   </head>
   <body>
+    <header>
+     <h1>My Library</h1>
+     <nav class="navigation">
+      <ul> 
+        <li><a href="/">View My Library</a></li>
+        <li><a href="/new">Add New Book</a></li>
+      </ul>
+     </nav>
+    </header>
     <main>
-      <h4>Search by Title or Author</h4>
-      <form action="/searches" method="post">
-        <input type="text" name="search" placeholder="Enter a title or author" required>
-        <fieldset>
-          <label for="title">
-            <span>Title</span>
-            <input type="radio" name="search" value="title" required>
-          </label>
-        </fieldset>
-        <fieldset>
-          <label for="author">
-            <span>Author</span>
-            <input type="radio" name="search" value="author" required>
-          </label>
-        </fieldset>
-        <button type="submit">Search the Google Books API</button>
-      </form>
+      <h2>Search by Title or Author</h2>
+
+      <section class="book-list">
+        <% results.forEach(book => { %>
+          <li class="book-item">
+            <img src="<%= book.img_url %>" />
+            <h3> <%= book.title %></h3>
+            <h4><%= book.author %></h4>
+          </li>
+        <% })%>
+      </section>
     </main>
   </body>
 </html>
