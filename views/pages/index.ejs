@@ -27,6 +27,17 @@
         </fieldset>
         <button type="submit">Search the Google Books API</button>
       </form>
+      <h1>Saved Books</h1>
+      <p><a href="/">Home</a></p>
+      <ul>
+          <% bookInfo.forEach(item => { %>
+              <img src="<%= item.img_url %>">
+              <li><%= item.title %></li>
+              <li><%= item.author %></li>
+              <li><%= item.isbn %></li>
+              <li><%= item.description %></li>
+              <% }) %>
+      </ul>
     </main>
   </body>
 </html>
