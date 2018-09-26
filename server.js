@@ -19,7 +19,7 @@ client.on('error', err => console.log(err));
 app.set('view engine', 'ejs');
 
 app.get('/', getBooks);
-// app.get('/', showForm); //need to do this for the form page
+app.get('/new', showForm); //need to do this for the form page
 app.post('/searches', createSearch);
 
 
@@ -45,7 +45,7 @@ function processError(err, res) {
 
 //show the form fields
 function showForm (request, response) {
-  response.render('pages/index')
+  response.render('pages/searches/new')
 }
 
 //Add book to database
