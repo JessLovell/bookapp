@@ -33,6 +33,9 @@ app.set('view engine', 'ejs');
 app.get('/', getSavedBooks);
 // app.get('/', (request, response) => response.render('pages/index'));
 
+app.get('/searches/new', (request, response) => {
+  response.render('pages/searches/new');
+});
 
 // Creates a new search to the Google Books API
 app.post('/searches', createSearch);
@@ -102,4 +105,14 @@ function Book(info) {
   // Need a ternary for image
   this.img_url = info.imageLinks === undefined ? placegholderImage : info.imageLinks.thumbnail;
   this.description = info.description === undefined ? 'No description available' : info.description;
+  this.bookshelf = 'Please put in bookshelf';
+ this.save='Save';
+}
+
+Book.prototype = {
+  save: function() {
+    const SQL = `INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
+    const values = [this.author, this.title, this.image_url, this.description, this.bookshelf];
+    client.query(SQL, values);
+  }
 }
