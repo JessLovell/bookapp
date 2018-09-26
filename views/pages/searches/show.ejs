@@ -1,15 +1,21 @@
 <!DOCTYPE hmtl>
 <html>
-    <head></head>
+    <head>
+        <link rel="stylesheet" href="styles/reset.css">
+        <link rel="stylesheet" href="styles/base.css">
+        <link rel="stylesheet" href="styles/layout.css">
+        <link rel="stylesheet" href="styles/modules.css">
+        <link rel="stylesheet" href="styles/icons.css">
+    </head>
     <body>
         <h1>Search Results</h1>
         <p><a href="/">Home</a></p>
         <ul>
             <% bookInfo.forEach(item => { %>
+                <img src="<%= item.img_url %>">
                 <li><%= item.title %></li>
                 <li><%= item.author %></li>
                 <li><%= item.isbn %></li>
-                <li><%= item.img_url %></li>
                 <li><%= item.description %></li>
                 <% }) %>
         </ul>

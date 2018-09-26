@@ -7,6 +7,9 @@ const express = require('express');
 // Superagent makes our proxied API requests
 const superagent = require('superagent');
 
+const pg = require('pg');
+require('dotenv').config();
+
 // Instantiate ExpressJS so we can utilize its methods
 const app = express();
 
@@ -18,10 +21,17 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('./public'));
 app.use(express.urlencoded({extended: true}));
 
+// Database Setup
+const client = new pg.Client(process.env.DATABASE_URL);
+client.connect();
+client.on('error', err => console.log(err));
+
 // Setting the view engine for server-side templating
 app.set('view engine', 'ejs');
 
-app.get('/', (request, response) => response.render('pages/index'));
+// API Routes
+app.get('/', getSavedBooks);
+// app.get('/', (request, response) => response.render('pages/index'));
 
 
 // Creates a new search to the Google Books API
@@ -43,6 +53,14 @@ function isbnLookup(info) {
   })
 }
 
+// Getting books from Database
+function getSavedBooks(request, response) {
+  let SQL = 'SELECT * FROM books;';
+  return client.query(SQL)
+    .then(results => response.render('pages/index', {bookInfo: results.rows}))
+    .catch(processError);
+}
+
 // Error handling
 function processError(err, res) {
   console.error(err);
@@ -52,7 +70,7 @@ function processError(err, res) {
 // No API key required
 function createSearch(request, response) {
   let url = 'https://www.googleapis.com/books/v1/volumes?q=';
-  
+
   console.log(request.body);
 
   if (request.body.search[1] === 'title') {
