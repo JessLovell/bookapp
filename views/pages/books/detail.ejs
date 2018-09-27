@@ -1,0 +1,21 @@
+// This view is behaving as a partial which will land in our show.ejs
+<section class="book-container detail-view">
+    <img src="<%= book.image_url %>">
+    <h3>
+        <%= book.title %>
+    </h3>
+    <span>
+        <%= book.author %>
+    </span>
+    <p class="desc">
+        <%= book.description %>
+    </p>
+    <p class="isbn">
+        <%= book.isbn %>
+        <% if (book.bookshelf) { %>
+            &mdash;
+            Bookshelf:
+            <%= book.bookshelf %>
+        <% } %>
+    </p>
+</section>
