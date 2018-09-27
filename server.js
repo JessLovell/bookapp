@@ -37,6 +37,10 @@ app.get('/searches/new', (request, response) => {
   response.render('pages/searches/new');
 });
 
+app.get('/book/:id', bookDetails);
+
+// app.post('/add', addBook);
+
 // Creates a new search to the Google Books API
 app.post('/searches', createSearch);
 
@@ -54,6 +58,14 @@ function isbnLookup(info) {
       return element.identifier;
     }
   })
+}
+
+function bookDetails(request, response) {
+  const SQL = 'SELECT * FROM books WHERE id=$1;';
+  const values = [request.params.id];
+  client.query(SQL, values)
+    .then(result => response.render('pages/books/show', { book:result.rows[0]}))
+    .catch(processError);
 }
 
 // Getting books from Database
@@ -106,13 +118,14 @@ function Book(info) {
   this.img_url = info.imageLinks === undefined ? placegholderImage : info.imageLinks.thumbnail;
   this.description = info.description === undefined ? 'No description available' : info.description;
   this.bookshelf = 'Please put in bookshelf';
- this.save='Save';
 }
 
 Book.prototype = {
   save: function() {
     const SQL = `INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
     const values = [this.author, this.title, this.image_url, this.description, this.bookshelf];
-    client.query(SQL, values);
+    client.query(SQL, values)
+      .then(result => response.render('index', { book:result.rows[0]}))
+      .catch(processError);
   }
 }
