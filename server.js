@@ -39,7 +39,7 @@ app.get('/searches/new', (request, response) => {
 
 app.get('/book/:id', bookDetails);
 
-// app.post('/add', addBook);
+app.post('/add', addBook);
 
 // Creates a new search to the Google Books API
 app.post('/searches', createSearch);
@@ -55,7 +55,7 @@ app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 function isbnLookup(info) {
   info.industryIdentifiers.forEach(element => {
     if (element.type === 'ISBN_13') {
-      return element.identifier;
+      return element.identifier;0
     }
   })
 }
@@ -123,9 +123,18 @@ function Book(info) {
 Book.prototype = {
   save: function() {
     const SQL = `INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
-    const values = [this.author, this.title, this.image_url, this.description, this.bookshelf];
+    const values = [this.author, this.title, this.img_url, this.description, this.bookshelf];
     client.query(SQL, values)
       .then(result => response.render('index', { book:result.rows[0]}))
       .catch(processError);
   }
+}
+
+function addBook(request, response) {
+  let {title, author, isbn, img_url, description} = request.body;
+  let SQL = 'INSERT INTO books(title, author, isbn, image_url, description) VALUES ($1, $2, $3, $4, $5);';
+  let values = [title, author, isbn, img_url, description];
+  return client.query(SQL, values)
+    .then(response.redirect('/'))
+    .catch(err => processError(err, response));
 }

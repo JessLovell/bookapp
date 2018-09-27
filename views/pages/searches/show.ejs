@@ -18,8 +18,17 @@
                 <li><%= item.isbn %></li>
                 <li><%= item.description %></li>
                 <li><%=item.bookshelf %></li>
-                <button class="save"><%=item.save %></button>
+                <button class="select-book">Select This Book</button>
+            <form id="create-form" action="/add" method="post">
+                <img src="<%= item.img_url %>">
+                <input type="text" name="title" value="<%= item.title %>" required>
+                <input type="text" name="author" value="<%= item.author %>" required>
+                <input type="text" name="isbn" value="<%= item.isbn %>">
+                <textarea name="description" cols="30" rows="5"><%= item.description %>"<textarea/>
+                <button type="submit">Add to Database</button>
+            </form>
                 <% }) %>
         </ul>
     </body>
 </html>
+
