@@ -1,9 +1,9 @@
 <!DOCTYPE hmtl>
 <html>
-    <head></head>
+    <%- include('../../layout/head') %>
     <body>
+        <%- include('../../layout/header') %>
         <h1>Search Results</h1>
-        <p><a href="/">Home</a></p>
         <ul>
             <% bookInfo.forEach(item => { %>
             <li class="book-item">
