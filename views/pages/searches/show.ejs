@@ -12,8 +12,19 @@
                 <h3><%= item.isbn %></h3>
                 <img src="<%= item.img_url %>" />
                 <p><%= item.description %></p>
+
+                <button class="select-button">Select This Book</button>
+                <form id="<%= %>" class="hide-me" action="" method="post">
+                    <input type="text" name="title" value="<%= item.title %>" required>
+                    <input type="text" name="author" value="<%= item.author %>" required>
+                    <input type="text" name="isbn" value="<%= item.isbn %>" required>
+                    <input type="text" name="description" value="<%= item.description %>" required>
+                    <input type="text" name="bookshelf" value="<%= item.bookshelf %>">
+                </form>
                 <% }) %>
             </li>
         </ul>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="js/app.js"></script>
     </body>
 </html>

@@ -11,3 +11,7 @@ main {
     margin: auto;
     width: 480px;
 }
+
+.hide-me {
+    visibility: hidden;
+}
