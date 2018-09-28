@@ -14,17 +14,17 @@
                 <p><%= item.description %></p>
 
                 <button class="select-button">Select This Book</button>
-                <form id="<%= %>" class="hide-me" action="" method="post">
+                <form id="<%= %>" class="hide-me" action="/books" method="post">
                     <input type="text" name="title" value="<%= item.title %>" required>
                     <input type="text" name="author" value="<%= item.author %>" required>
                     <input type="text" name="isbn" value="<%= item.isbn %>" required>
                     <input type="text" name="description" value="<%= item.description %>" required>
-                    <input type="text" name="bookshelf" value="<% item.bookshelf %>">
+                    <input type="text" name="bookshelf" value="<% item.bookshelf %> required">
                 </form>
                 <% }) %>
             </li>
         </ul>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-        <script src="js/app.js"></script>
+        <script src="/js/app.js"></script>
     </body>
 </html>
