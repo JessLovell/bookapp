@@ -5,12 +5,21 @@ const express = require('express');
 const pg = require('pg');
 const superagent = require('superagent');
 const app = express();
+const methodOverride = require('method-override');
 
 const PORT = process.env.PORT || 3000;
 
 // Application Middleware
 app.use(express.static('./public'));
 app.use(express.urlencoded({extended: true}));
+
+app.use(methodOverride(request => {
+  if( request.body && typeof request.body ==='object' && '_method' in request.body) {
+    let method = request.body._method;
+    delete request.body._method;
+    return method;
+  }
+}))
 
 const client = new pg.Client('postgres://localhost:5432/book_app');
 client.connect();
@@ -23,7 +32,9 @@ app.get('/', getBooks);
 app.get('/new', showForm); //need to do this for the form page
 app.post('/searches', createSearch);
 app.get('/books/:book_id', getOneBook);
+app.put('/books/:id', updateBook);
 app.post('/books', createBook);
+app.delete('/books/:id', deleteBook);
 
 
 // Catch-all
@@ -117,4 +128,23 @@ function createBook(request, response) {
   return client.query(SQL, values)
     .then(result => response.redirect(`/books/${result.rows[0].id}`))
     .catch(processError);
+}
+
+function updateBook(request, response) {
+  let {title, author, isbn, img_url, description, bookshelf} = request.body;
+  let SQL = `UPDATE books SET title=$1, author=$2, isbn=$3, img_url=$4, description=$5, bookshelf=$6 WHERE id=$7;`;
+  let values = [title, author, isbn, img_url, description, bookshelf, request.params.id];
+
+  client.query(SQL, values)
+    .then(response.redirect(`/books/${request.params.id}`))
+    .catch(err => processError(err, response));
+}
+
+function deleteBook(req, resp) {
+  let SQL = 'DELETE from books WHERE id=$1;';
+  let values = [req.params.id];
+
+  client.query(SQL, values)
+    .then(resp.redirect('/'))
+    .catch(err => processError(err, resp));
 }
