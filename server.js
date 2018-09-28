@@ -108,19 +108,13 @@ function getOneBook( request, response){
 }
 
 function createBook(request, response) {
-  let normalizedShelf = request.body.bookshelf.toLowerCase();
+  let bookshelf = request.body.bookshelf.toLowerCase();
 
   let {title, author, isbn, img_url, description} = request.body;
-  let SQL = 'INSERT INTO books (title, author, isbn, img_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);';
-  let values = [title, author, isbn, img_url, description, normalizedShelf];
+  let SQL = 'INSERT INTO books (title, author, isbn, img_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;';
+  let values = [title, author, isbn, img_url, description, bookshelf];
 
   return client.query(SQL, values)
-    .then(()=>{
-      SQL = 'SELECT * FROM books WHERE isbn=$1;';
-      values = [request.body.isbn];
-      return client.query(SQL, values)
-        .then(result => response.redirect(`/books/${result.rows[0].id}`))
-        .catch(processError);
-    })
-    .catch(err => processError(err, response));
+    .then(result => response.redirect(`/books/${result.rows[0].id}`))
+    .catch(processError);
 }
