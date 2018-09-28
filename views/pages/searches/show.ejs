@@ -15,11 +15,13 @@
 
                 <button class="select-button">Select This Book</button>
                 <form id="<%= %>" class="hide-me" action="/books" method="post">
+                    <input type="text" name="img_url" value="<%= item.img_url %>" required>
                     <input type="text" name="title" value="<%= item.title %>" required>
                     <input type="text" name="author" value="<%= item.author %>" required>
                     <input type="text" name="isbn" value="<%= item.isbn %>" required>
                     <input type="text" name="description" value="<%= item.description %>" required>
                     <input type="text" name="bookshelf" value="<% item.bookshelf %> required">
+                    <button type="submit">Add this Book</button>
                 </form>
                 <% }) %>
             </li>
