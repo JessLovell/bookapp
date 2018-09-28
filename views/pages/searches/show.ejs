@@ -14,7 +14,7 @@
                 <p><%= item.description %></p>
 
                 <button class="select-button">Select This Book</button>
-                <form id="<%= %>" class="hide-me" action="/books" method="post">
+                <form class="hide-me" action="/books/:id" method="put">
                     <input type="text" name="img_url" value="<%= item.img_url %>" required>
                     <input type="text" name="title" value="<%= item.title %>" required>
                     <input type="text" name="author" value="<%= item.author %>" required>
