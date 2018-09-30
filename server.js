@@ -27,7 +27,6 @@ client.on('error', err => console.log(err));
 
 // Setting the view engine for server-side templating
 app.set('view engine', 'ejs');
-
 app.get('/', getBooks);
 app.get('/new', showForm); //need to do this for the form page
 app.post('/searches', createSearch);
@@ -51,6 +50,22 @@ function isbnLookup(info) {
   })
 }
 
+function bookDetails(request, response) {
+  const SQL = 'SELECT * FROM books WHERE id=$1;';
+  const values = [request.params.id];
+  client.query(SQL, values)
+    .then(result => response.render('pages/books/show', { book:result.rows[0]}))
+    .catch(processError);
+}
+
+// Getting books from Database
+function getSavedBooks(request, response) {
+  let SQL = 'SELECT * FROM books;';
+  return client.query(SQL)
+    .then(results => response.render('pages/index', {bookInfo: results.rows}))
+    .catch(processError);
+}
+
 // Error handling
 function processError(err, res) {
   console.error(err);
@@ -64,6 +79,7 @@ function showForm (request, response) {
 
 function createSearch(request, response) {
   let url = 'https://www.googleapis.com/books/v1/volumes?q=';
+
   console.log(request.body);
 
   if (request.body.search[1] === 'title') {
@@ -93,6 +109,17 @@ function Book(info) {
   this.isbn = isbnLookup(info) || 'No ISBN Available';
   this.img_url = info.imageLinks === undefined ? placegholderImage : info.imageLinks.thumbnail;
   this.description = info.description === undefined ? 'No description available' : info.description;
+  this.bookshelf = 'Please put in bookshelf';
+}
+
+Book.prototype = {
+  save: function() {
+    const SQL = `INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
+    const values = [this.author, this.title, this.image_url, this.description, this.bookshelf];
+    client.query(SQL, values)
+      .then(result => response.render('index', { book:result.rows[0]}))
+      .catch(processError);
+  }
 }
 
 function getBooks (request, response) {
