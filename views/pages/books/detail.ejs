@@ -1,21 +1,30 @@
-// This view is behaving as a partial which will land in our show.ejs
 <section class="book-container detail-view">
-    <img src="<%= book.image_url %>">
-    <h3>
-        <%= book.title %>
-    </h3>
-    <span>
-        <%= book.author %>
-    </span>
-    <p class="desc">
-        <%= book.description %>
-    </p>
+    <img src="<%= book.img_url %>">
+    <h3><%= book.title %></h3>
+    <span><%= book.author %></span>
+    <p class="desc"><%= book.description %></p>
     <p class="isbn">
         <%= book.isbn %>
         <% if (book.bookshelf) { %>
-            &mdash;
-            Bookshelf:
-            <%= book.bookshelf %>
-        <% } %>
+            &mdash; 
+            Bookshelf: <%= book.bookshelf %>
+       <% } %>
     </p>
+
+    
+    <form class="hide-me" action="/books/<%= book.id %>" method="post">
+        <button class="update-button">Update This Book</button>
+        <input type="hidden" name="_method" value="put">
+        <input type="text" name="img_url" value="<%= book.img_url %>" required>
+        <input type="text" name="title" value="<%= book.title %>" required>
+        <input type="text" name="author" value="<%= book.author %>" required>
+        <input type="text" name="isbn" value="<%= book.isbn %>" required>
+        <input type="text" name="description" value="<%= book.description %>" required>
+        <input type="text" name="bookshelf" value="<% book.bookshelf %> required">
+        <button type="submit">Update this Book</button>
+
+        <button type="submit" class="delete" method="post" formaction="/books/<%= book.id %>">Delete</button>
+        <input type="hidden" name="_method" value="delete">
+    </form>
+
 </section>

@@ -1,28 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>George & Jessica's Library</title>
-    <link rel="stylesheet" href="styles/reset.css">
-    <link rel="stylesheet" href="styles/base.css">
-    <link rel="stylesheet" href="styles/layout.css">
-    <link rel="stylesheet" href="styles/modules.css">
-    <link rel="stylesheet" href="styles/icons.css">
-  </head>
+    <%- include('../layout/head') %>
   <body>
+    <%- include('../layout/header') %>
     <main>
-      <h1>Saved Books</h1>
-      <p><a href="/searches/new">Search for a Book</a></p>
-      <ul>
-          <% bookInfo.forEach(item => { %>
-              <img src="<%= item.img_url %>">
-              <li><%= item.title %></li>
-              <li><%= item.author %></li>
-              <li><%= item.isbn %></li>
-              <li><%= item.description %></li>
-              <a href="/book/<%- item.id%>">
-              <button id="<%- item.id %>">View Details</button></a>
-              <% }) %>
-      </ul>
+      <h2>Search by Title or Author</h2>
+
+      <section class="book-list">
+        <% results.forEach(book => { %>
+          <li class="book-item">
+            <img src="<%= book.img_url %>" />
+            <h3> <%= book.title %></h3>
+            <h4><%= book.author %></h4>
+            <a href="/books/<%- book.id %>">
+            <button id="<%- book.id %>">View Details</button></a>
+          </li>
+        <% })%>
+      </section>
     </main>
   </body>
 </html>

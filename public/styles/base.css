@@ -1,3 +1,17 @@
 body {
-    background-color: rgb(114, 55, 114);
+    max-width: 480px;
+    margin: auto;
+    outline: 1px solid black;
+    display: flex;
+    background-color: rosybrown;
+}
+
+main {
+    background-color: antiquewhite;
+    margin: auto;
+    width: 480px;
+}
+
+.hide-me {
+    visibility: hidden;
 }
