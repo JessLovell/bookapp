@@ -33,7 +33,7 @@ app.post('/searches', createSearch);
 app.get('/books/:book_id', getOneBook);
 app.put('/books/:id', updateBook);
 app.post('/books', createBook);
-// app.delete('/books/:id', deleteBook);
+app.delete('/books/:id', deleteBook);
 
 
 // Catch-all
@@ -167,11 +167,11 @@ function updateBook(request, response) {
     .catch(err => processError(err, response));
 }
 
-function deleteBook(req, resp) {
+function deleteBook(request, response) {
   let SQL = 'DELETE from books WHERE id=$1;';
-  let values = [req.params.id];
+  let values = [request.params.id];
 
   client.query(SQL, values)
-    .then(resp.redirect('/'))
-    .catch(err => processError(err, resp));
+    .then(response.redirect('/'))
+    .catch(err => processError(err, response));
 }

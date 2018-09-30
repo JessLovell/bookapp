@@ -22,9 +22,12 @@
         <input type="text" name="description" value="<%= book.description %>" required>
         <input type="text" name="bookshelf" value="<% book.bookshelf %> required">
         <button type="submit">Update this Book</button>
+    </form>
 
-        <!-- <button type="submit" class="delete" method="post" formaction="/books/<%= book.id %>">Delete</button>
-        <input type="hidden" name="_method" value="delete"> -->
+
+    <form id="delete-form" formaction="/delete/<%= book.id %>" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <button type="submit">Delete this book</button>
     </form>
 
 </section>
