@@ -34,7 +34,7 @@ app.post('/searches', createSearch);
 app.get('/books/:book_id', getOneBook);
 app.put('/books/:id', updateBook);
 app.post('/books', createBook);
-app.delete('/books/:id', deleteBook);
+// app.delete('/books/:id', deleteBook);
 
 
 // Catch-all
