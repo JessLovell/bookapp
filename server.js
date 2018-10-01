@@ -80,7 +80,7 @@ function showForm (request, response) {
 function createSearch(request, response) {
   let url = 'https://www.googleapis.com/books/v1/volumes?q=';
 
-  console.log(request.body);
+  // console.log(request.body);
 
   if (request.body.search[1] === 'title') {
     url += `+intitle:${request.body.search[0]}`;
@@ -127,7 +127,8 @@ function getBooks (request, response) {
 
   return client.query(SQL)
     .then(results => {
-      if (results.rows.rowCount === 0) {
+      console.log(results.rowCount);
+      if (results.rowCount === 0) {
         response.render('pages/searches/new');
       } else {
         response.render('pages/index', {results: results.rows});
