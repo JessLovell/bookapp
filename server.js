@@ -21,7 +21,7 @@ app.use(methodOverride(request => {
   }
 }))
 
-const client = new pg.Client('postgres://localhost:5432/book_app');
+const client = new pg.Client(process.env.DATABASE_URL);
 client.connect();
 client.on('error', err => console.log(err));
 
@@ -110,16 +110,6 @@ function Book(info) {
   this.img_url = info.imageLinks === undefined ? placegholderImage : info.imageLinks.thumbnail;
   this.description = info.description === undefined ? 'No description available' : info.description;
   this.bookshelf = 'Please put in bookshelf';
-}
-
-Book.prototype = {
-  save: function() {
-    const SQL = `INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
-    const values = [this.author, this.title, this.image_url, this.description, this.bookshelf];
-    client.query(SQL, values)
-      .then(result => response.render('index', { book:result.rows[0]}))
-      .catch(processError);
-  }
 }
 
 function getBooks (request, response) {
