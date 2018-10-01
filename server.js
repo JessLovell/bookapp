@@ -129,7 +129,7 @@ function getBooks (request, response) {
     .then(results => {
       console.log(results.rowCount);
       if (results.rowCount === 0) {
-        response.render('pages/searches/new');
+        response.render('pages/new');
       } else {
         response.render('pages/index', {results: results.rows});
       }
