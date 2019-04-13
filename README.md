@@ -2,12 +2,11 @@
 ## About
 Book App is an application that allows you to keep track of books for one user (me or you, not both).   
 Deployed Site:https://gm-jl-booklist.herokuapp.com/   
-Languanges: Javasript, SQL   
+Languages: Javasript, SQL   
 Tools: Heroku, Google Books API, Node  
 
-
 ## Features
-Feature | Description
+Title | Description
 --- | ---
 Main Page | View all books in the Library (Book App)
 Search for a Book | Search the Google Books API by `title` or `author` for a book. All the books from the search are then displayed on the screen. You can add a book to the Library (Book App). When adding books to the Library, you can edit the details of the book. 
